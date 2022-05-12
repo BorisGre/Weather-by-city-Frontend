@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, ViewChild } from '@angular/core';
 import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs';
+import { concat, debounceTime, distinctUntilChanged, fromEvent, merge, Observable, switchMap, tap, zip } from 'rxjs';
 import { GithubServiceService } from './github-service.service';
 import { GithubRepos } from './shared/github-repos';
 
@@ -18,45 +18,46 @@ export class AppComponent {
   weatherForecast:any = []
   currentWeather: any
   showWeatherSection = false
+  weatherStreams$: Observable<any>
 
   constructor(private gitHubService: GithubServiceService, private http: HttpClient){ }
 
-    repos: any
-    
     ngOnInit() {
 
-      this.form.valueChanges.pipe(
-        debounceTime (1000),
-      ).subscribe(
-       ({request}:any) => { 
-         
-        console.log(`AAA`)
-        const url = `https://api.openweathermap.org/geo/1.0/direct?q=${request}&limit=1&appid=2d12e5f75479307f2533681126bd90cd`
-         this.http.get(url).subscribe((d:any) => 
-           {
-             this.cityName = `${request[0].toUpperCase()}${request.slice(1, request.length)}`
+    //const submitStream$ = fromEvent(this.onSubmit) 
 
-           console.log(d, `get url`)
-           const {lat, lon} = d[0] 
-           const cnt = 10
-           const url2 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&cnt=${cnt}&appid=2d12e5f75479307f2533681126bd90cd`
+     const searchText$ = this.form.valueChanges.pipe(
+        debounceTime (1200),
+        distinctUntilChanged(), 
+        tap(({request}):any => this.cityName = `${request[0].toUpperCase()}${request.slice(1, request.length)}`),
+      )
 
-           console.log(`lat, lon`, lat, lon)
+      const getLocation$: Observable<any> = searchText$
+        .pipe(switchMap((request):any => this.gitHubService.getLocation(request))
+      ) 
 
-             this.http.get(url2).subscribe((weather1:any) => 
-               { 
-                 this.currentWeather = weather1
-                 this.showWeatherSection = true
-                 var cnt2 = 25
-                 const url3 = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=${cnt2}&appid=2d12e5f75479307f2533681126bd90cd`
-                 this.http.get(url3).subscribe((weather2:any) => this.weatherForecast = weather2)
-               }
-             )
-           }
-     )
-    }
-      )  
+      const currentWeather$: Observable<any> = getLocation$
+        .pipe(
+          tap(_ => console.log(`getCurrentWeather in Stream`)),
+          switchMap(location => this.gitHubService.getCurrentWeather(location))
+      )
+
+      const weatherForecst$: Observable<any> = getLocation$
+       .pipe(
+          tap(_ => console.log(`getForecast in Stream`)),
+          switchMap(location => this.gitHubService.getForecast(location))
+      )
+      this.weatherStreams$ = zip(currentWeather$, weatherForecst$) 
+      this.weatherStreams$.subscribe(([weather, forecast]):any => {
+          this.currentWeather = weather,
+          this.weatherForecast = forecast, 
+          this.showWeatherSection = true
+      })
     }  
+
+    ngOnDestroy(){
+      //this.weatherStreams$
+    }
 
     form = new FormGroup({
       request: new FormControl('', Validators.minLength(3)),
@@ -67,9 +68,14 @@ export class AppComponent {
     }
   
     onSubmit(): void {
-      console.log(`form`, this.form.value)
-      this.gitHubService.get(this.form.value).subscribe(
-        (d: any) => { this.repos = d['drinks'], console.log(d), console.log(`DATA by submit`, this.repos)},
-      )
+      console.log(`form`, this.form.value, this.weatherStreams$)
+
+     /* this.gitHubService.get(this.form.value).subscribe(
+        (d: any) => { 
+          //this.repos = d['drinks'], 
+          console.log(d) 
+          //console.log(`DATA by submit`, this.repos)
+        },
+      )*/
     }
 }

@@ -5,3 +5,7 @@ section {
     margin-top: 10%;
     flex-direction: column;
 }
+
+.requestValidation{
+    text-align: center;
+}

@@ -1,10 +1,8 @@
 <main>
     <h1>Weather around the world by cityname</h1>
     <section class="search" [ngStyle]="{'margin-top': '0px', 'flex-direction': 'row'}"> 
-      <!--app-form-component [formUpLink]="childForm"></app-form-component-->
-      <!--app-form-component></app-form-component-->
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div *ngIf="request.invalid"> Name is too short. </div>
+        <div *ngIf="request.invalid" class="requestValidation">Name is too short. </div>
         <input formControlName="request" placeholder="enter something">
         <button type="submit">Find</button>
      </form>
