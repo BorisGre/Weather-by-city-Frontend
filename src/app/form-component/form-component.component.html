@@ -1,0 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div *ngIf="request.invalid"> Name is too short. </div>
+
+    <input formControlName="request" placeholder="enter something">
+
+    <button type="submit">Find</button>
+ </form>
+ <!--button (click)="setValue()">Set preset value</button-->
+

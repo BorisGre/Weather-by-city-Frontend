@@ -1,0 +1,23 @@
+<h2>Current weather in {{cityName}}</h2>
+<section [ngStyle]="{'flex-direction': 'row', 'justify-content': 'center', 'align-content': 'flex-start', 'margin-top': '15px'}" class="currentWeather">   
+<ul>
+  <li>Main: {{weather.main}}<i class="wi main_color" [ngClass]="weatherIcons[periodOfDay+'-'+weather.main]"></i></li>
+  <li>Desc: {{weather.desc}}</li>
+  <li *ngIf="weather.precipitation">Precipitation: {{weather.precipitation}} mm</li>
+</ul>
+<ul>  
+  <li>Temp: {{weather.temp | number:'1.0-0'}}<sup>o</sup> C <i class="wi wi-thermometer main_color"></i></li>
+  <li>Humidity: {{weather.humidity}}% <i class="wi wi-humidity main_color"></i></li>
+  <li>Pressure: {{weather.pressure/1.33 | number:'1.0-0'}} mmHg <i class="wi wi-thermometer-internal main_color"></i></li>
+</ul>
+<ul>
+  <li>Clouds: {{weather.clouds}}%</li>
+  <li>Visibility: {{weather.visibility/1000 | number:'1.0-2'}} km</li>                                                      
+  <li>Wind: {{weather['wind']['speed']}} m/s <i class="wi wi-wind towards-0-deg main_color" [ngStyle]="{'transform': 'rotate('+weather['wind']['deg']+'deg)'}" ></i></li>
+</ul>  
+<ul>
+  <li>Sunrise: {{weather.sunrise*1000 | date:'medium'}} <i class="wi wi-sunrise main_color"></i></li>
+  <li>Sunset:  {{weather.sunset*1000 | date:'medium'}} <i class="wi wi-sunset main_color"></i></li>
+  <li>Now: {{weather.currentDayTime*1000 | date:'medium'}}</li>
+</ul>
+</section>

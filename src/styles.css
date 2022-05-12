@@ -1,0 +1,56 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/weather-icons-master/css/weather-icons.min.css";
+@import "./assets/weather-icons-master/css/weather-icons-wind.min.css";
+h1 {
+    text-align: center;
+}
+main {
+    padding: 0px;
+    margin: 0px;
+    /*height: 50px;*/
+}
+section {
+    margin: 0px;
+}
+section .search{ 
+    padding: 0px;
+    margin: 10px;
+    height: 50px;    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 0px;
+    /*align-content: flex-start;*/
+}
+
+.main_color{
+    color: darkviolet;
+    font-size: 16px;
+}
+.currentWeather{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: flex-start;
+    border: 1px dashed black;
+}
+
+.forecast{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: flex-start;
+    border: 1px dashed grey;
+}
+
+ul{
+    padding: 5px;
+    margin: 0 20px;
+}
+
+li{
+   list-style-type: none;
+   padding: 0px;
+   margin: 0px;
+}

@@ -1,0 +1,25 @@
+<section [ngStyle]="{'margin-top': '2%'}">
+    <h2>Weather forecast for the next 3 days</h2>
+      <ul class="forecast">
+        <li *ngFor="let forecast of forecastArray; let idx = index">
+          <h3>{{idx == 0 ? 'Tommorow '+(forecast.dateTime*1000 | date:'longDate')
+                         : (forecast.dateTime*1000 | date:'longDate')}}</h3>
+          <ul>
+            <li>Temp: {{forecast.avgTemp | number:'1.0-0'}} <sup>o</sup>C</li>
+            <li>Min. temp: {{forecast.minTemp | number:'1.0-0'}}<i class="wi wi-thermometer main_color"></i></li>
+            <li>Max. temp: {{forecast.maxTemp | number:'1.0-0'}}<i class="wi wi-thermometer main_color"></i></li>
+
+            <li>Humidity: {{forecast.avgHumidity | number:'1.0-0'}} <i class="wi wi-humidity main_color"></i></li>
+            <li>Min. humid: {{forecast.minHumidity | number:'1.0-0'}} <i class="wi wi-humidity main_color"></i></li>
+            <li>Max. humid: {{forecast.maxHumidity | number:'1.0-0'}} <i class="wi wi-humidity main_color"></i></li>
+
+            <li>Pressure: {{forecast.avgPressure/1.33 | number:'1.0-0'}} mmHg <i class="wi wi-thermometer-internal main_color"></i></li>
+            <!--li>Min. {{forecast.avgPressure/1.33 | number:'1.0-0'}} mmHg <i class="wi wi-thermometer-internal main_color"></i></li>
+            <li>Max. {{forecast.avgPressure/1.33 | number:'1.0-0'}} mmHg <i class="wi wi-thermometer-internal main_color"></i></li-->
+
+            <li>Wind: {{forecast.avgWindSpeed | number:'1.0-0'}} m/s <i class="wi wi-wind towards-0-deg main_color" [ngStyle]="{'transform': 'rotate('+forecast.avgWindDirection+'deg)'}" ></i></li>
+            <li>Speed: {{forecast.minWindSpeed | number:'1.0-0'}} - {{forecast.maxWindSpeed | number:'1.0-0'}} m/s</li>
+          </ul>  
+         </li>
+      </ul>
+</section>
