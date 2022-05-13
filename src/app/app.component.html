@@ -1,5 +1,8 @@
 <main>
     <h1>Weather around the world by cityname</h1>
+    <ng-template [ngIf]="showModalWindow">
+      <app-modal-window [closeModal]="closeModal" [cityName]="cityName"></app-modal-window>
+    </ng-template>
     <section class="search" [ngStyle]="{'margin-top': '0px', 'flex-direction': 'row'}"> 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div *ngIf="request.invalid" class="requestValidation">Name is too short. </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-modal-window',
@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalWindowComponent implements OnInit {
 
+  @Input() closeModal:any
+  @Input() cityName: string
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

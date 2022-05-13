@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import config from './shared/config';
+import config from '../shared/config';
 
-import { GithubRepos } from './shared/github-repos';
+import { GithubRepos } from '../shared/weatherCurrent';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GithubServiceService {
+export class WeatherService {
 
   constructor(private http: HttpClient) { }
   
@@ -20,8 +20,15 @@ export class GithubServiceService {
 
   getCurrentWeather(location: any){
     console.log(`getCurrentWeather`, `locationObj`, location)
-    const {lat, lon} = location[0] 
-    console.log(`lat, lon`, lat, lon)
+    //var lat, lon;
+    var {lat, lon} = location[0] 
+    /*try {
+      var {lat, lon} = location[0] 
+      console.log(`lat, lon`, lat, lon)
+    }
+      catch(e){
+
+    }*/
 
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${config.apiKey}`
            
@@ -30,7 +37,15 @@ export class GithubServiceService {
 
   getForecast(location: any){
     console.log(`getForeacast`, `locationObj`, location)
-    const {lat, lon} = location[0] 
+    //var lat, lon;
+    var {lat, lon} = location[0] 
+    /*try {
+      var {lat, lon} = location[0] 
+      console.log(`lat, lon`, lat, lon)
+    }
+      catch(e){
+        throw new Error(`location not find`)
+    }*/
     const cnt = config.countOfForecastPeriods
     console.log(`lat, lon`, lat, lon)
 
